@@ -1,0 +1,359 @@
+---
+title: "Homework Assignment week 2"
+author: "Vaibhav Rajesh Vesmaker"
+date: "09/23/2023"
+output: html_document
+---
+```{r}
+library(readxl)  # to use read_csv function 
+library("ggplot2") 
+library(dbplyr)
+library(tidyverse)
+```
+```{r}
+getwd()
+```
+
+```{r}
+myData <- read_excel('Typical_Employee_Survey_Data.xlsx')
+head(myData)
+
+
+colnames(myData)
+#no column names before addressing question1
+```
+```{r}
+new_column_names <-c("age","gender","job_attributes","smoothworkingculture","years_of_exp","decisionskills","promotion","jobturndowns","relation","budetarydecisions","perks")
+colnames(myData)<-new_column_names
+colnames(myData)
+```
+```{r}
+head(myData)
+#solved question1
+```
+```{r}
+df <- data.frame(myData)  # creating the data frame for our data
+head(df)
+```
+```{r}
+# Exploring the Data Frame
+
+names(df)
+
+```
+```{r}
+ncol(df)
+#saw some of the data
+
+```
+
+
+```{r}
+nrow(df)
+
+```
+
+
+```{r}
+dim(df)
+
+```
+
+
+```{r}
+head(df)
+
+```
+
+
+```{r}
+tail(df)
+
+```
+
+
+```{r}
+str(df)
+# solve question 3 factors
+```
+
+
+```{r}
+#box plotfor each column
+boxplot(df$age,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot Example",  # Title of the plot
+        col = "blue"  # Box color (optional)
+)
+
+```
+```{r}
+boxplot(df$job_attributes,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot job_attributes",  # Title of the plot
+        col = "pink"  # Box color (optional)
+)
+
+```
+```{r}
+boxplot(df$gender,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot gender",  # Title of the plot
+        col = "orange"  # Box color (optional)
+)
+```
+
+
+```{r}
+boxplot(df$smoothworkingculture,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot smooth working culture",  # Title of the plot
+        col = "green"  # Box color (optional)
+)
+```
+
+
+```{r}
+boxplot(df$years_of_exp,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot years_of_exp",  # Title of the plot
+        col = "maroon"  # Box color (optional)
+)
+```
+
+
+```{r}
+boxplot(df,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot gender",  # Title of the plot
+        col = "orange"  # Box color (optional)
+)
+```
+
+
+```{r}
+boxplot(df$decisionskills,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot decisionskills",  # Title of the plot
+        col = "brown"  # Box color (optional)
+)
+```
+
+```{r}
+boxplot(df$jobturndowns,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot jobturndowns",  # Title of the plot
+        col = "orange"  # Box color (optional)
+)
+```
+
+
+```{r}
+boxplot(df$promotion,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot promotion",  # Title of the plot
+        col = "violet"  # Box color (optional)
+)
+```
+
+
+```{r}
+boxplot(df$perks,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot perks",  # Title of the plot
+        col = "darkblue"  # Box color (optional)
+)
+```
+
+
+```{r}
+boxplot(df$relation,
+        xlab = "X-axis Label",  # Label for the x-axis
+        ylab = "Y-axis Label",  # Label for the y-axis
+        main = "Box Plot relation",  # Title of the plot
+        col = "purple"  # Box color (optional)
+)
+```
+
+
+
+```{r}
+str(df)   # whole structure of our data
+
+```
+
+
+```{r}
+unique(df$age) # this will print all the unique values of age column
+```
+
+
+```{r}
+unique(df$gender) # this will print all the unique values of gender column
+```
+
+```{r}
+# Column
+
+df$age  # or we can write df[1]
+df[2]
+df[c("age")]
+df[7:10]
+df[c("age","gender")]
+```
+
+```{r}
+# Calculate the five-number summary
+summary_stats <- summary(df)
+
+# Print the five-number summary
+print(summary_stats)
+```
+```{r}
+by(df$age,df$gender,summary)
+
+```
+
+
+```{r}
+aggregate(df$age,list("Type" = df$gender),summary)
+```
+
+
+
+```{r}
+#Question3 factors
+library(dplyr)
+
+df <- df %>%
+  mutate(
+    #ordinal variables/categorical ids 
+    years_of_exp = factor(years_of_exp),#ordinal variables/categorical ids 
+    promotion = factor(promotion),
+    job_attributes=factor(job_attributes),
+    
+    #Numeric columns that represent continuous variables, such as age, height, or weight, should remain as numeric data types.
+    jobturndowns=factor(jobturndowns) 
+   
+  )
+str(df)
+```
+
+```{r}
+
+hist(df$budetarydecisions)
+```
+```{r}
+hist(df$relation)
+```
+```{r}
+boxplot(df$age)
+```
+```{r}
+length(which(df$age==20))  # 1
+```
+
+
+```{r}
+# Calculating total number of Males
+length(which(df$gender==1))
+```
+
+
+```{r}
+# Calculating total number of Females
+length(which(df$gender==2))
+```
+
+
+```{r}
+# Getting the max value of years_of_experience
+max(df$relation)  # 52.25
+```
+```{r}
+pie(df$gender,label = df$Name, main = "gender of People")
+```
+```{r}
+pie(df$relation,label = df$Name, main = "relation of People")
+```
+```{r}
+pie(df$decisionskills,label = df$Name, main = "decision skills of People")
+```
+```{r}
+plot(df$decisionskills, df$age, type = "l", 
+     xlab = "decisionskills",  # Label for the x-axis
+     ylab = " age",  # Label for the y-axis
+     main = "decision skills by age",  # Title of the plot
+     col = "red"  # Line color (optional)
+)
+```
+```{r}
+
+```
+```{r}
+#right visual for each column
+#are the perks dependent on gender
+plot(df$gender, df$age, 
+     xlab = "Gender",  # Label for the x-axis
+     ylab = "age",  # Label for the y-axis
+     main = "Scatter Plot Example",  # Title of the plot
+     pch = 19,  # Symbol type (optional; 19 is a solid circle)
+     col = "blue"  # Point color (optional)
+)
+```
+
+
+
+```{r}
+# turn_down vs age 
+ggplot(data = df) +
+  geom_point(aes(x = jobturndowns, y = age), shape = "circle", size = 2, color = "purple")
+```
+```{r}
+# perks vs age 
+ggplot(data = df) +
+  geom_point(aes(x = perks, y = age), shape = "circle", size = 2, color = "blue")
+```
+```{r}
+# job_attributes vs age 
+ggplot(data = df) +
+  geom_point(aes(x = job_attributes, y = age), shape = "circle", size = 2, color = "green")
+```
+
+
+
+
+```{r}
+# proudness vs age 
+ggplot(data = df) +
+  geom_point(aes(x = decisionskills, y = age), shape = "circle", size = 2, color = "purple")
+
+```
+```{r}
+# Plotting a graph of gender vs likeliness_of_promotion. 
+df %>% count(gender)%>%ggplot(aes(gender,n)) + geom_bar(stat = 'identity', fill = 'purple', alpha = 0.3, col = "black") +
+  xlab('gender ') + ylab('likeliness_of_promotion')
+```
+```{r}
+# Plotting a graph which shows the years of experience of both Males and Females. We can see that Male population has higher work experience
+ggplot(data = df,aes(years_of_exp))+ geom_histogram(stat="count",binwidth = 3, col='black', fill='blue', alpha = 0.4) + facet_wrap(~gender)
+```
+
+```{r}
+ggplot(data = df) +
+  geom_point(aes(x = years_of_exp, y = age), shape = "cross", size = 2, color = "blue")
+```
+```{r}
+ggplot(data = df) +
+  geom_point(aes(x = relation, y = age), shape = "cross", size = 2, color = "blue")
+```
